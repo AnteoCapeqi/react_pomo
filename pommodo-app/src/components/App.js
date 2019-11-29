@@ -17,6 +17,8 @@ class App extends Component {
     this.onDecreaseBreakLength = this.onDecreaseBreakLength.bind(this);
     this.onIncreaseSessionLength = this.onIncreaseSessionLength.bind(this);
     this.onDecreaseSessionLength = this.onDecreaseSessionLength.bind(this);
+    this.onToggleInterval= this.onToggleInterval.bind(this);
+    this.onUpdateTimerMinute= this.onUpdateTimerMinute.bind(this);
   }
   onIncreaseBreakLength(){
     this.setState((prevState) =>{
@@ -35,16 +37,36 @@ class App extends Component {
   onIncreaseSessionLength(){
     this.setState((prevState)=>{
       return{
-        sessionLength: prevState.sessionLength + 1
+        sessionLength: prevState.sessionLength + 1,
+        TimerMinute : prevState.sessionLength + 1
       };
     });
   }
   onDecreaseSessionLength(){
     this.setState((prevState)=>{
       return{
-        sessionLength: prevState.sessionLength - 1
+        sessionLength: prevState.sessionLength - 1,
+        TimerMinute : prevState.sessionLength - 1
       };
     });
+  }
+  onUpdateTimerMinute(){
+    this.setState((prevState)=>{
+      return{
+        TimerMinute : prevState.TimerMinute - 1
+      }
+    })
+  }
+  onToggleInterval(isSession){
+    if (isSession){this.setState({
+      TimerMinute : this.state.sessionLength
+    })
+  } else {
+    this.setState({
+      TimerMinute : this.state.breakLength
+    })
+  }
+
   }
   render() {
     return (
@@ -61,7 +83,9 @@ class App extends Component {
           />
         </section>
         <Timer 
-          TimerMinute={this.state.TimerMinute}
+          TimerMinute={this.state.TimerMinute} breakLength={this.state.breakLength}
+          onUpdateTimerMinute={this.onUpdateTimerMinute}
+          onToggleInterval={this.onToggleInterval}
         />
       </main>
     );
